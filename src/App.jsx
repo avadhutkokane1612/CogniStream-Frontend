@@ -2,97 +2,9 @@ import { useMemo, useState } from 'react'
 import MetricCard from './components/MetricCard'
 import ActivityCard from './components/ActivityCard'
 import FocusChart from './components/FocusChart'
+import metrics from './data/metrics.js'
+import { activities, sampleEvents } from './data/activityData.js'
 import './App.css'
-
-const metrics = [
-  {
-    title: 'Focus Time',
-    value: '4h 25m',
-    note: 'Illustrative sample data',
-    icon: '◷',
-  },
-  {
-    title: 'Interruptions',
-    value: '12',
-    note: 'Illustrative sample data',
-    icon: '↯',
-  },
-  {
-    title: 'Context Switches',
-    value: '18',
-    note: 'Illustrative sample data',
-    icon: '⇄',
-  },
-  {
-    title: 'Activity Sources',
-    value: '3',
-    note: 'GitHub · Slack · IDE',
-    icon: '◈',
-  },
-]
-
-const activities = [
-  {
-    name: 'GitHub Activity',
-    code: 'GH',
-    description: 'Commits, pull requests and repository events.',
-    className: 'github',
-    status: 'Sample events',
-  },
-  {
-    name: 'Slack Activity',
-    code: 'SL',
-    description: 'Communication events and potential interruptions.',
-    className: 'slack',
-    status: 'Sample events',
-  },
-  {
-    name: 'IDE Activity',
-    code: 'IDE',
-    description: 'Coding events and development activity.',
-    className: 'ide',
-    status: 'Sample events',
-  },
-]
-
-const sampleEvents = [
-  {
-    time: '09:15 AM',
-    source: 'GitHub',
-    event: 'Commit activity',
-    category: 'Coding',
-  },
-  {
-    time: '09:32 AM',
-    source: 'IDE',
-    event: 'Coding session',
-    category: 'Focus',
-  },
-  {
-    time: '10:05 AM',
-    source: 'Slack',
-    event: 'Message received',
-    category: 'Interruption',
-  },
-  {
-    time: '10:20 AM',
-    source: 'IDE',
-    event: 'Coding session',
-    category: 'Focus',
-  },
-  {
-    time: '10:45 AM',
-    source: 'GitHub',
-    event: 'Pull request activity',
-    category: 'Coding',
-  },
-  {
-    time: '11:10 AM',
-    source: 'Slack',
-    event: 'Message received',
-    category: 'Interruption',
-  },
-]
 
 const chartValues = [42, 65, 50, 78, 58, 88, 70, 46, 74, 60, 83, 55]
 
@@ -204,18 +116,23 @@ function App() {
           <a className="nav-link active" href="#overview">
             ▦ Overview
           </a>
+
           <a className="nav-link" href="#flow-state">
             ◷ Flow State
           </a>
+
           <a className="nav-link" href="#github">
             GH GitHub Activity
           </a>
+
           <a className="nav-link" href="#slack">
             SL Slack Activity
           </a>
+
           <a className="nav-link" href="#ide">
             IDE IDE Activity
           </a>
+
           <a className="nav-link" href="#activity-log">
             ☷ Activity Log
           </a>
@@ -237,7 +154,7 @@ function App() {
             </p>
           </div>
 
-          <span className="date-badge">WEEK 1 · UI PREVIEW</span>
+          <span className="date-badge">WEEK 2 · UI PREVIEW</span>
         </header>
 
         <div className="sample-banner" role="status">
@@ -298,7 +215,10 @@ function App() {
 
           <div className="activity-grid">
             {activities.map((activity) => (
-              <ActivityCard key={activity.name} activity={activity} />
+              <ActivityCard
+                key={activity.name}
+                activity={activity}
+              />
             ))}
           </div>
         </section>
@@ -340,6 +260,7 @@ function App() {
                 {filteredEvents.map((event, index) => (
                   <tr key={`${event.time}-${event.source}-${index}`}>
                     <td>{event.time}</td>
+
                     <td>
                       <span
                         className={`source-pill ${event.source.toLowerCase()}`}
@@ -347,6 +268,7 @@ function App() {
                         {event.source}
                       </span>
                     </td>
+
                     <td>{event.event}</td>
                     <td>{event.category}</td>
                   </tr>
@@ -367,7 +289,7 @@ function App() {
         </section>
 
         <footer className="footer">
-          CogniStream · UI Scaffolding · Week 1
+          CogniStream · Base Metrics Dashboard · Week 2
         </footer>
       </main>
     </div>
