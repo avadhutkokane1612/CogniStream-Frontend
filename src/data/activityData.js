@@ -59,6 +59,12 @@ const sampleEvents = [
     event: 'Message received',
     category: 'Interruption',
   },
+  {
+    time: '11:30 AM',
+    source: 'GitHub',
+    event: 'New commit pushed',
+    category: 'Coding',
+  },
 ]
 
 export { activities, sampleEvents }
