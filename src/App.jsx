@@ -23,15 +23,27 @@ const chartTimes = [
   '02:30',
 ]
 
+const navigationItems = [
+  { label: '▦ Overview', id: 'overview', filter: 'All' },
+  { label: '◷ Flow State', id: 'flow-state', filter: 'All' },
+  { label: 'GH GitHub Activity', id: 'github', filter: 'GitHub' },
+  { label: 'SL Slack Activity', id: 'slack', filter: 'Slack' },
+  { label: 'IDE IDE Activity', id: 'ide', filter: 'IDE' },
+  { label: '☷ Activity Log', id: 'activity-log', filter: 'All' },
+]
+
 function App() {
   const [filter, setFilter] = useState('All')
+  const [activeNav, setActiveNav] = useState('overview')
 
   const filteredEvents = useMemo(() => {
     if (filter === 'All') {
       return sampleEvents
     }
 
-    return sampleEvents.filter((event) => event.source === filter)
+    return sampleEvents.filter(
+      (event) => event.source === filter
+    )
   }, [filter])
 
   const chartOption = {
@@ -103,6 +115,11 @@ function App() {
     ],
   }
 
+  const handleNavigation = (item) => {
+    setActiveNav(item.id)
+    setFilter(item.filter)
+  }
+
   return (
     <div className="app">
       <aside className="sidebar">
@@ -113,29 +130,18 @@ function App() {
         <p className="sidebar-label">WORKSPACE</p>
 
         <nav className="navigation" aria-label="Main navigation">
-          <a className="nav-link active" href="#overview">
-            ▦ Overview
-          </a>
-
-          <a className="nav-link" href="#flow-state">
-            ◷ Flow State
-          </a>
-
-          <a className="nav-link" href="#github">
-            GH GitHub Activity
-          </a>
-
-          <a className="nav-link" href="#slack">
-            SL Slack Activity
-          </a>
-
-          <a className="nav-link" href="#ide">
-            IDE IDE Activity
-          </a>
-
-          <a className="nav-link" href="#activity-log">
-            ☷ Activity Log
-          </a>
+          {navigationItems.map((item) => (
+            <a
+              key={item.id}
+              className={`nav-link ${
+                activeNav === item.id ? 'active' : ''
+              }`}
+              href={`#${item.id}`}
+              onClick={() => handleNavigation(item)}
+            >
+              {item.label}
+            </a>
+          ))}
         </nav>
 
         <div className="sidebar-footer">
@@ -203,7 +209,10 @@ function App() {
           </article>
         </section>
 
-        <section className="activity-section" aria-label="Activity sources">
+        <section
+          className="activity-section"
+          aria-label="Activity sources"
+        >
           <div className="section-heading">
             <div>
               <p className="eyebrow">CONNECTED SOURCES</p>
@@ -214,12 +223,27 @@ function App() {
           </div>
 
           <div className="activity-grid">
-            {activities.map((activity) => (
-              <ActivityCard
-                key={activity.name}
-                activity={activity}
-              />
-            ))}
+            {activities.map((activity) => {
+              const name = activity.name.toLowerCase()
+
+              const activityId = name.includes('github')
+                ? 'github'
+                : name.includes('slack')
+                  ? 'slack'
+                  : name.includes('ide')
+                    ? 'ide'
+                    : undefined
+
+              return (
+                <div
+                  id={activityId}
+                  className="activity-anchor"
+                  key={activity.name}
+                >
+                  <ActivityCard activity={activity} />
+                </div>
+              )
+            })}
           </div>
         </section>
 
@@ -258,7 +282,9 @@ function App() {
 
               <tbody>
                 {filteredEvents.map((event, index) => (
-                  <tr key={`${event.time}-${event.source}-${index}`}>
+                  <tr
+                    key={`${event.time}-${event.source}-${index}`}
+                  >
                     <td>{event.time}</td>
 
                     <td>
