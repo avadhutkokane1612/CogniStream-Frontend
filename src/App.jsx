@@ -5,6 +5,37 @@ import FocusChart from './components/FocusChart'
 import metrics from './data/metrics.js'
 import { activities, sampleEvents } from './data/activityData.js'
 import './App.css'
+import ContextSwitchChart from './components/ContextSwitchChart'
+import InterruptionTimeline from './components/InterruptionTimeline'
+
+
+// WEEK 3 - DEVELOPER FRICTION METRICS
+const frictionMetrics = [
+  {
+    title: 'Total Coding Time',
+    value: '5h 30m',
+    note: 'Illustrative sample data',
+    icon: '⌨',
+  },
+  {
+    title: 'Total Interruptions',
+    value: '12',
+    note: 'Illustrative sample data',
+    icon: '↯',
+  },
+  {
+    title: 'Context Switches',
+    value: '18',
+    note: 'Illustrative sample data',
+    icon: '⇄',
+  },
+  {
+    title: 'Flow Sessions',
+    value: '6',
+    note: 'Illustrative sample data',
+    icon: '◷',
+  },
+]
 
 const chartValues = [42, 65, 50, 78, 58, 88, 70, 46, 74, 60, 83, 55]
 
@@ -55,6 +86,7 @@ function App() {
         color: '#ffffff',
       },
     },
+
     grid: {
       left: 12,
       right: 12,
@@ -62,6 +94,7 @@ function App() {
       bottom: 25,
       containLabel: true,
     },
+
     xAxis: {
       type: 'category',
       boundaryGap: false,
@@ -78,6 +111,7 @@ function App() {
         color: '#8994a7',
       },
     },
+
     yAxis: {
       type: 'value',
       min: 0,
@@ -93,6 +127,7 @@ function App() {
         formatter: '{value}%',
       },
     },
+
     series: [
       {
         name: 'Focus level',
@@ -122,6 +157,9 @@ function App() {
 
   return (
     <div className="app">
+
+      {/* SIDEBAR */}
+
       <aside className="sidebar">
         <h2 className="brand">
           CogniStream<span>.</span>
@@ -150,39 +188,100 @@ function App() {
         </div>
       </aside>
 
+      {/* MAIN CONTENT */}
+
       <main className="main-content" id="overview">
+
+        {/* HEADER */}
+
         <header className="topbar">
           <div>
             <p className="eyebrow">DEVELOPER ANALYTICS</p>
+
             <h1>Developer Flow Dashboard</h1>
+
             <p className="subtitle">
               Understand focus, interruptions and development activity.
             </p>
           </div>
 
-          <span className="date-badge">WEEK 2 · UI PREVIEW</span>
+          <span className="date-badge">
+            WEEK 3 · UI PREVIEW
+          </span>
         </header>
+
+        {/* SAMPLE DATA NOTICE */}
 
         <div className="sample-banner" role="status">
           Preview mode: all displayed metrics and chart values are illustrative,
           not real developer telemetry.
         </div>
 
-        <section className="metrics-grid" aria-label="Developer metrics">
+        {/* EXISTING WEEK 2 METRICS */}
+
+        <section
+          className="metrics-grid"
+          aria-label="Developer metrics"
+        >
           {metrics.map((metric) => (
-            <MetricCard key={metric.title} metric={metric} />
+            <MetricCard
+              key={metric.title}
+              metric={metric}
+            />
           ))}
         </section>
 
+        {/* WEEK 3 DEVELOPER FRICTION OVERVIEW */}
+
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">
+              WEEK 3 · FRICTION ANALYTICS
+            </p>
+
+            <h2>Developer Friction Overview</h2>
+          </div>
+
+          <span className="tag">
+            Sample Metrics
+          </span>
+        </div>
+
+        {/* WEEK 3 KPI CARDS */}
+
+        <section
+          className="metrics-grid"
+          aria-label="Developer Friction metrics"
+        >
+          {frictionMetrics.map((metric) => (
+            <MetricCard
+              key={metric.title}
+              metric={metric}
+            />
+          ))}
+        </section>
+
+        {/* FLOW ANALYTICS */}
+<ContextSwitchChart />
+
+<section style={{ marginTop: '24px' }}>
+  <InterruptionTimeline />
+</section>
+
         <section className="content-grid">
+
           <article className="panel" id="flow-state">
+
             <div className="panel-heading">
               <div>
                 <p className="eyebrow">FLOW ANALYTICS</p>
+
                 <h2>Focus Level Trend</h2>
               </div>
 
-              <span className="tag">Sample Chart</span>
+              <span className="tag">
+                Sample Chart
+              </span>
             </div>
 
             <div className="chart-container">
@@ -192,38 +291,59 @@ function App() {
             <p className="chart-note">
               Illustrative focus scores across sample time intervals.
             </p>
+
           </article>
 
+          {/* CONTEXT SWITCHING TAX */}
+
           <article className="panel tax-panel">
-            <p className="eyebrow">PRODUCTIVITY INSIGHT</p>
+
+            <p className="eyebrow">
+              PRODUCTIVITY INSIGHT
+            </p>
+
             <h2>Context-Switching Tax</h2>
 
             <div className="insight-icon">⇄</div>
 
             <p className="placeholder-text">
-              This section will estimate focus time lost to interruptions when
-              validated telemetry and calculation rules become available.
+              This section will estimate focus time lost to interruptions
+              when validated telemetry and calculation rules become available.
             </p>
 
-            <span className="tag">Awaiting real data</span>
+            <span className="tag">
+              Awaiting real data
+            </span>
+
           </article>
+
         </section>
+
+        {/* DEVELOPER ACTIVITY */}
 
         <section
           className="activity-section"
           aria-label="Activity sources"
         >
+
           <div className="section-heading">
             <div>
-              <p className="eyebrow">CONNECTED SOURCES</p>
+              <p className="eyebrow">
+                CONNECTED SOURCES
+              </p>
+
               <h2>Developer Activity</h2>
             </div>
 
-            <span className="tag">3 source types</span>
+            <span className="tag">
+              3 source types
+            </span>
           </div>
 
           <div className="activity-grid">
+
             {activities.map((activity) => {
+
               const name = activity.name.toLowerCase()
 
               const activityId = name.includes('github')
@@ -244,17 +364,30 @@ function App() {
                 </div>
               )
             })}
+
           </div>
+
         </section>
 
-        <section className="panel table-panel" id="activity-log">
+        {/* RECENT ACTIVITY LOG */}
+
+        <section
+          className="panel table-panel"
+          id="activity-log"
+        >
+
           <div className="panel-heading table-heading">
+
             <div>
-              <p className="eyebrow">EVENT MONITOR</p>
+              <p className="eyebrow">
+                EVENT MONITOR
+              </p>
+
               <h2>Recent Activity Log</h2>
             </div>
 
             <label className="filter-control">
+
               <span>Filter source</span>
 
               <select
@@ -266,11 +399,15 @@ function App() {
                 <option value="Slack">Slack</option>
                 <option value="IDE">IDE</option>
               </select>
+
             </label>
+
           </div>
 
           <div className="table-scroll">
+
             <table>
+
               <thead>
                 <tr>
                   <th>Time</th>
@@ -281,7 +418,9 @@ function App() {
               </thead>
 
               <tbody>
+
                 {filteredEvents.map((event, index) => (
+
                   <tr
                     key={`${event.time}-${event.source}-${index}`}
                   >
@@ -296,28 +435,40 @@ function App() {
                     </td>
 
                     <td>{event.event}</td>
+
                     <td>{event.category}</td>
                   </tr>
+
                 ))}
 
                 {filteredEvents.length === 0 && (
                   <tr>
-                    <td colSpan={4}>No sample events found.</td>
+                    <td colSpan={4}>
+                      No sample events found.
+                    </td>
                   </tr>
                 )}
+
               </tbody>
+
             </table>
+
           </div>
 
           <p className="chart-note">
             Sample events only · Not connected to live services.
           </p>
+
         </section>
 
+        {/* FOOTER */}
+
         <footer className="footer">
-          CogniStream · Base Metrics Dashboard · Week 2
+          CogniStream · Developer Friction Dashboard · Week 3
         </footer>
+
       </main>
+
     </div>
   )
 }
