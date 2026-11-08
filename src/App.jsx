@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import MetricCard from './components/MetricCard'
 import ActivityCard from './components/ActivityCard'
 import FocusChart from './components/FocusChart'
 import metrics from './data/metrics.js'
-import { activities, sampleEvents } from './data/activityData.js'
+import { activities } from './data/activityData.js'
 import './App.css'
 import ContextSwitchChart from './components/ContextSwitchChart'
 import InterruptionTimeline from './components/InterruptionTimeline'
@@ -62,20 +62,44 @@ const navigationItems = [
   { label: 'IDE IDE Activity', id: 'ide', filter: 'IDE' },
   { label: '☷ Activity Log', id: 'activity-log', filter: 'All' },
 ]
-
 function App() {
-  const [filter, setFilter] = useState('All')
-  const [activeNav, setActiveNav] = useState('overview')
+const [filter, setFilter] = useState('All')
+const [activeNav, setActiveNav] = useState('overview')
+const [apiEvents, setApiEvents] = useState([])
+const [, setApiError] = useState('')
 
-  const filteredEvents = useMemo(() => {
-    if (filter === 'All') {
-      return sampleEvents
-    }
+useEffect(() => {
+  fetch('http://127.0.0.1:8000/api/activities')
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Backend API connection failed')
+      }
+      return response.json()
+    })
+    .then((data) => {
+      const formattedEvents = data.activities.map((item) => ({
+        time: '—',
+        source: item.source,
+        event: item.activity,
+        category: 'Activity',
+      }))
 
-    return sampleEvents.filter(
-      (event) => event.source === filter
-    )
-  }, [filter])
+      setApiEvents(formattedEvents)
+    })
+    .catch((error) => {
+      setApiError(error.message)
+    })
+}, [])
+
+const filteredEvents = useMemo(() => {
+  if (filter === 'All') {
+    return apiEvents
+  }
+
+  return apiEvents.filter(
+    (event) => event.source === filter
+  )
+}, [filter, apiEvents])
 
   const chartOption = {
     tooltip: {
@@ -184,7 +208,7 @@ function App() {
 
         <div className="sidebar-footer">
           <span className="status-dot" />
-          UI Preview · Sample Data
+          Backend API · Connected
         </div>
       </aside>
 
@@ -456,7 +480,7 @@ function App() {
           </div>
 
           <p className="chart-note">
-            Sample events only · Not connected to live services.
+            Activity records loaded from Backend API · Timestamps unavailable.
           </p>
 
         </section>
