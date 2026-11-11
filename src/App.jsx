@@ -570,7 +570,7 @@ function App() {
         <ContextSwitchChart metrics={contextSwitchMetrics} />
 
         <section style={{ marginTop: '24px' }}>
-          <InterruptionTimeline />
+          <InterruptionTimeline interruptions={apiInterruptions} />
         </section>
 
         {/* FOCUS AND PRODUCTIVITY */}
