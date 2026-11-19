@@ -36,3 +36,7 @@ venv/
 *.backup.*
 *.week1-backup.*
 
+
+data/processed/github_clean.csv
+data/processed/ide_clean.csv
+data/processed/slack_clean.csv
